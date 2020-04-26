@@ -4,24 +4,28 @@ import { shade } from 'polished';
 import background from '../../assets/background.png';
 
 export const Container = styled.div`
-  height: 100vh;
+  width: 100%;
+  max-width: 1400px;
+
+  height: 100%;
+  max-height: 700px;
 
   display: flex;
-  align-items: stretch;
 `;
 
 export const Content = styled.div`
+  flex: 1;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 
-  width: 100%;
-  max-width: 700px;
+  margin: 0 10px;
 
   form {
     margin: 80px 0;
-    width: 340px;
+    min-width: 340px;
     text-align: center;
 
     h1 {
@@ -43,9 +47,11 @@ export const Content = styled.div`
   }
 
   > a {
-    color: #ff9000;
     display: flex;
     align-items: center;
+    justify-content: center;
+
+    color: #ff9000;
     margin-top: 24px;
     text-decoration: none;
 
@@ -62,7 +68,8 @@ export const Content = styled.div`
 `;
 
 export const Background = styled.div`
-  flex: 1;
+  flex: 2;
+
   background: url(${background}) no-repeat center;
   background-size: cover;
 `;

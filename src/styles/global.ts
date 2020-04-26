@@ -8,7 +8,20 @@ export default createGlobalStyle`
     outline: 0;
   }
 
-  body {
+  #root {
+    height: 100%;
+    min-height: 700px;
+
+    width: 100%;
+    min-width: 360px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  html, body {
+    height: 100%;
     background: #312E38;
     color: #FFF;
     -webkit-font-smoothing: antialiased;
