@@ -19,7 +19,7 @@ const Input: React.FC<InputProps> = ({ name, icon: Icon, ...rest }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isFocus, setIsFocus] = useState(false);
   const [isFilled, setIsFilled] = useState(false);
-  const { fieldName, registerField, defaultValue } = useField(name);
+  const { fieldName, registerField, defaultValue, error } = useField(name);
 
   const handleOnFocus = useCallback(() => {
     setIsFocus(true);
@@ -48,6 +48,7 @@ const Input: React.FC<InputProps> = ({ name, icon: Icon, ...rest }) => {
         ref={inputRef}
         {...rest}
       />
+      {error}
     </Container>
   );
 };
