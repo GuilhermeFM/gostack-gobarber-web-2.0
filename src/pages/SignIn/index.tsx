@@ -9,14 +9,24 @@ import logo from '../../assets/logo.svg';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 import validate from '../../validations/SignIn';
+import { useAuth } from '../../hooks/AuthContext';
 
 const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
+  const { signIn } = useAuth();
 
-  const handleSubmit = useCallback(async (data: object): Promise<void> => {
-    const errors = await validate(data);
-    formRef.current?.setErrors(errors || {});
-  }, []);
+  const handleSubmit = useCallback(
+    async (data: { email: string; password: string }): Promise<void> => {
+      const errors = await validate(data);
+
+      if (errors) {
+        formRef.current?.setErrors(errors);
+      } else {
+        signIn({ email: data.email, password: data.password });
+      }
+    },
+    [signIn],
+  );
 
   return (
     <Container>
