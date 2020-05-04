@@ -9,11 +9,15 @@ import logo from '../../assets/logo.svg';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 import validate from '../../validations/SignIn';
-import { useAuth } from '../../hooks/AuthContext';
+
+import { useAuth } from '../../hooks/auth';
+import { useToast } from '../../hooks/toast';
 
 const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
+
   const { signIn } = useAuth();
+  const { addToast } = useToast();
 
   const handleSubmit = useCallback(
     async (data: { email: string; password: string }): Promise<void> => {
@@ -22,10 +26,18 @@ const SignIn: React.FC = () => {
       if (errors) {
         formRef.current?.setErrors(errors);
       } else {
-        signIn({ email: data.email, password: data.password });
+        try {
+          await signIn({ email: data.email, password: data.password });
+        } catch (error) {
+          addToast({
+            type: 'error',
+            title: 'Ocorreu um erro.',
+            content: 'Ocorreu um erro ao logar, cheque suas crendenciais.',
+          });
+        }
       }
     },
-    [signIn],
+    [signIn, addToast],
   );
 
   return (
