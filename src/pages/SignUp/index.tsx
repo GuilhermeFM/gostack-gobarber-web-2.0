@@ -1,5 +1,5 @@
 import React, { useRef, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
@@ -12,12 +12,51 @@ import Input from '../../components/Input';
 import Button from '../../components/Button';
 import validate from '../../validations/SignUp';
 
+import { useToast } from '../../hooks/toast';
+import api from '../../services/api';
+
+interface SignUPParams {
+  name: string;
+  email: string;
+  password: string;
+}
+
 const SignUp: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
+  const { addToast } = useToast();
+  const history = useHistory();
 
-  const handleSubmit = useCallback(async (data: object): Promise<void> => {
+  const handleSubmit = useCallback(async (data: SignUPParams): Promise<
+    void
+  > => {
     const errors = await validate(data);
-    formRef.current?.setErrors(errors || {});
+
+    if (errors) {
+      formRef.current?.setErrors(errors);
+    } else {
+      try {
+        await api.post('users', {
+          name: data.name,
+          email: data.email,
+          password: data.password,
+        });
+
+        addToast({
+          type: 'success',
+          title: 'Cadastro realizado',
+          content:
+            'Seu cadastro foi realizado com sucesso, você ja pode fazer logon no sistema',
+        });
+
+        history.push('/');
+      } catch (error) {
+        addToast({
+          type: 'error',
+          title: 'Falha no cadastro',
+          content: 'Não foi possível realizar seu cadastro no sistema.',
+        });
+      }
+    }
   }, []);
 
   return (
