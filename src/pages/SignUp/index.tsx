@@ -26,38 +26,39 @@ const SignUp: React.FC = () => {
   const { addToast } = useToast();
   const history = useHistory();
 
-  const handleSubmit = useCallback(async (data: SignUPParams): Promise<
-    void
-  > => {
-    const errors = await validate(data);
+  const handleSubmit = useCallback(
+    async (data: SignUPParams): Promise<void> => {
+      const errors = await validate(data);
 
-    if (errors) {
-      formRef.current?.setErrors(errors);
-    } else {
-      try {
-        await api.post('users', {
-          name: data.name,
-          email: data.email,
-          password: data.password,
-        });
+      if (errors) {
+        formRef.current?.setErrors(errors);
+      } else {
+        try {
+          await api.post('users', {
+            name: data.name,
+            email: data.email,
+            password: data.password,
+          });
 
-        addToast({
-          type: 'success',
-          title: 'Cadastro realizado',
-          content:
-            'Seu cadastro foi realizado com sucesso, você ja pode fazer logon no sistema',
-        });
+          addToast({
+            type: 'success',
+            title: 'Cadastro realizado',
+            content:
+              'Seu cadastro foi realizado com sucesso, você ja pode fazer logon no sistema',
+          });
 
-        history.push('/');
-      } catch (error) {
-        addToast({
-          type: 'error',
-          title: 'Falha no cadastro',
-          content: 'Não foi possível realizar seu cadastro no sistema.',
-        });
+          history.push('/');
+        } catch (error) {
+          addToast({
+            type: 'error',
+            title: 'Falha no cadastro',
+            content: 'Não foi possível realizar seu cadastro no sistema.',
+          });
+        }
       }
-    }
-  }, []);
+    },
+    [addToast, history],
+  );
 
   return (
     <Container>
